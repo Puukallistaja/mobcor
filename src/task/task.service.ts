@@ -3,6 +3,7 @@ import { Task, TaskStatus } from './task.model'
 import { randomBytes } from 'crypto'
 import { CreateTaskDto } from './dto/createTask.dto'
 import { UpdateTaskDto } from './dto/updateTask.dto'
+import { GetTaskFilterDto } from './dto/getTaskFilter.dto'
 
 @Injectable()
 export class TaskService {
@@ -10,6 +11,22 @@ export class TaskService {
 
   public getAllTasks(): Task[] {
     return this.tasks
+  }
+
+  public getAllTasksWithFilters({ status, search }: GetTaskFilterDto): Task[] {
+    let tasks = this.getAllTasks()
+
+    if (status) {
+      tasks = tasks.filter(task => task.status === status)
+    }
+    if (search) {
+      tasks = tasks.filter(
+        task =>
+          task.title.includes(search) || task.description.includes(search),
+      )
+    }
+
+    return tasks
   }
 
   public createTask({ title, description }: CreateTaskDto): Task {

@@ -6,19 +6,28 @@ import {
   Param,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common'
 import { TaskService } from './task.service'
 import { Task, TaskStatus } from './task.model'
 import { CreateTaskDto } from './dto/createTask.dto'
 import { UpdateTaskDto } from './dto/updateTask.dto'
+import { GetTaskFilterDto } from './dto/getTaskFilter.dto'
+import { ApiQuery } from '@nestjs/swagger'
 
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Get()
-  getAllTasks(): Task[] {
-    return this.taskService.getAllTasks()
+  @ApiQuery({ name: 'search', type: String, required: false, })
+  @ApiQuery({ name: 'status', enum: TaskStatus, required: false, })
+  getTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
+    if (Object.keys(filterDto).length) {
+      return this.taskService.getAllTasksWithFilters(filterDto)
+    } else {
+      return this.taskService.getAllTasks()
+    }
   }
 
   @Get(':id')
