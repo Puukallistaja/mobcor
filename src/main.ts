@@ -9,15 +9,15 @@ import { AppModule } from './app.module';
     .setTitle('Cats example')
     .setDescription('The cats API description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addTag('users')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/', app, document);
 
-  await app.listen(3001);
+  await app.listen(4001);
 })()
 
 ;(async function api() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  await app.listen(4000);
 })()

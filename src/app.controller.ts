@@ -1,8 +1,16 @@
-import { Controller, Body, Get, Post, Param, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiParam, ApiBody } from '@nestjs/swagger';
-import { AppService } from './app.service';
-import { LoginUserDto } from "./auth/dto/login-user.dto";
+import {
+  Controller,
+  Body,
+  Get,
+  Post,
+  Param,
+  UseGuards,
+  HttpCode,
+} from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
+import { ApiParam, ApiBody } from '@nestjs/swagger'
+import { AppService } from './app.service'
+import { LoginUserDto } from './auth/dto/login-user.dto'
 
 @Controller()
 export class AppController {
@@ -10,18 +18,19 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    return this.appService.getHello()
   }
 
   @Get('user/:id')
-  @ApiParam({name: 'id', type: Number})
+  @ApiParam({ name: 'id', type: Number })
   getUser(@Param() params): string {
-    return this.appService.getHello(params.id);
+    return this.appService.getHello(params.id)
   }
 
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
+  @HttpCode(200)
   async login(@Body() user: LoginUserDto) {
-    return user;
+    return user
   }
 }
