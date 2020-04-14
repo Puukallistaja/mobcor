@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose'
 
 export const UserSchema = new Schema({
-  name: String,
+  name: { type: String, required: false },
+  email: String,
   password: String,
 })

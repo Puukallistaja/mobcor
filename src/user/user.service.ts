@@ -12,13 +12,11 @@ export class UserService {
     const createdUser = new this.userModel(createUserDto)
     return createdUser.save()
   }
-  async findOne(name: string): Promise<User> {
-    return this.userModel.findOne({name})
+  async find(params?: User): Promise<User[]> {
+    return this.userModel.find(params)
   }
   async findById(id: string): Promise<User> {
     return this.userModel.findById(id)
   }
-  async findAll(): Promise<User[]> {
-    return this.userModel.find({})
-  }
+
 }

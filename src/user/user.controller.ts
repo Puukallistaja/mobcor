@@ -11,7 +11,7 @@ export class UserController {
 
   @Get()
   async userList(): Promise<User[]> {
-    return await this.userService.findAll();
+    return await this.userService.find();
   }
 
   @Post()
@@ -22,7 +22,7 @@ export class UserController {
   @Get(':id')
   @ApiParam({name: 'id', type: String})
   getUser(@Param() {id}): Promise<User> {
-    return this.userService.findOne(id);
+    return this.userService.findById(id);
   }
 
   // @UseGuards(AuthGuard('local'))
