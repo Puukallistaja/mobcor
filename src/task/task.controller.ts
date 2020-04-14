@@ -7,22 +7,26 @@ import {
   Delete,
   Patch,
   Query,
+  ValidationPipe,
 } from '@nestjs/common'
 import { TaskService } from './task.service'
 import { Task, TaskStatus } from './task.model'
 import { CreateTaskDto } from './dto/createTask.dto'
 import { UpdateTaskDto } from './dto/updateTask.dto'
 import { GetTaskFilterDto } from './dto/getTaskFilter.dto'
-import { ApiQuery } from '@nestjs/swagger'
+import { ApiQuery, ApiTags } from '@nestjs/swagger'
+import { TaskStatusValidationPipe } from './task-status-validation.pipe'
 
 @Controller('task')
+@ApiTags('Tasks')
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Get()
+
   @ApiQuery({ name: 'search', type: String, required: false, })
   @ApiQuery({ name: 'status', enum: TaskStatus, required: false, })
-  getTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
+  getTasks(@Query(ValidationPipe) filterDto: GetTaskFilterDto): Task[] {
     if (Object.keys(filterDto).length) {
       return this.taskService.getAllTasksWithFilters(filterDto)
     } else {
@@ -48,7 +52,7 @@ export class TaskController {
   @Patch(':id/status')
   updateTask(
     @Param('id') id: string,
-    @Body() updateTaskDto: UpdateTaskDto,
+    @Body('status', TaskStatusValidationPipe) updateTaskDto: UpdateTaskDto,
   ): Task {
     return this.taskService.updateTask({ id, updateTaskDto })
   }

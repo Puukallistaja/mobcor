@@ -7,7 +7,26 @@ import { GetTaskFilterDto } from './dto/getTaskFilter.dto'
 
 @Injectable()
 export class TaskService {
-  private tasks: Task[] = []
+  private tasks: Task[] = [
+    {
+      title: 'string',
+      description: 'string',
+      status: TaskStatus.OPEN,
+      id: '2dec028395d0696d',
+    },
+    {
+      title: 'string',
+      description: 'string',
+      status: TaskStatus.OPEN,
+      id: '7f5c271d05730167',
+    },
+    {
+      title: 'string',
+      description: 'string',
+      status: TaskStatus.OPEN,
+      id: '95cc40b999144f0e',
+    },
+  ]
 
   public getAllTasks(): Task[] {
     return this.tasks
