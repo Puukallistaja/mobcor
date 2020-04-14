@@ -1,36 +1,9 @@
-import {
-  Controller,
-  Body,
-  Get,
-  Post,
-  Param,
-  UseGuards,
-  HttpCode,
-} from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
-import { ApiParam, ApiBody } from '@nestjs/swagger'
+import { Controller } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { AppService } from './app.service'
-import { LoginUserDto } from './auth/dto/login-user.dto'
 
-@Controller()
+@Controller('auth')
+@ApiTags('Authentication')
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello()
-  }
-
-  @Get('user/:id')
-  @ApiParam({ name: 'id', type: Number })
-  getUser(@Param() params): string {
-    return this.appService.getHello(params.id)
-  }
-
-  @UseGuards(AuthGuard('local'))
-  @Post('auth/login')
-  @HttpCode(200)
-  async login(@Body() user: LoginUserDto) {
-    return user
-  }
 }
