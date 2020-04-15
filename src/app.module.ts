@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { AppService } from './app.service'
+// import { AppService } from './app.service'
 import { UserModule } from './user/user.module'
 import { TaskModule } from './task/task.module'
 import { AuthModule } from './auth/auth.module'
@@ -25,7 +25,5 @@ import { OrderModule } from './order/order.module';
     RestaurantModule,
     OrderModule,
   ],
-  providers: [AppService],
-  controllers: [OrderController],
 })
 export class AppModule {}
