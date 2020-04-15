@@ -1,9 +1,9 @@
-import { TaskStatus } from '../task.model'
+import { TaskStatus, TaskStatusArray } from '../task.model'
 import { IsOptional, IsIn, IsNotEmpty } from 'class-validator'
 
 export class GetTaskFilterDto {
   @IsOptional()
-  @IsIn([TaskStatus.OPEN, TaskStatus.DONE, TaskStatus.IN_PROGRESS])
+  @IsIn(TaskStatusArray)
   status?: TaskStatus
 
   @IsOptional()

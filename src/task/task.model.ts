@@ -10,3 +10,9 @@ export enum TaskStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   OPEN = 'OPEN',
 }
+
+export const TaskStatusArray = [
+  TaskStatus.OPEN,
+  TaskStatus.DONE,
+  TaskStatus.IN_PROGRESS,
+]
