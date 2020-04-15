@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { ApiTags } from '@nestjs/swagger'
 import { UserService } from '../user/user.service'
 import { LoginUserDto } from './dtos/user.dto'
-import { CreateUserDto } from 'src/user/dtos/create-user.dto'
+import { CreateUserDto } from 'src/user/dto/create-user.dto'
 
 @Controller('auth')
 @ApiTags('Authentication')
