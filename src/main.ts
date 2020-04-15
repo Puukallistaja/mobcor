@@ -6,9 +6,9 @@ import { AppModule } from './app.module';
   const app = await NestFactory.create(AppModule);
 
   const options = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
+    .setTitle('Corest of the cores')
+    .setDescription('The core API description')
+    .setVersion('1.333.7')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/api', app, document);

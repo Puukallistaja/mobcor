@@ -14,6 +14,8 @@ import { OrderModule } from './order/order.module';
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_BASE_URL, {
       useNewUrlParser: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
       user: process.env.MONGODB_USER,
       pass: process.env.MONGODB_PASSWORD,
     }),

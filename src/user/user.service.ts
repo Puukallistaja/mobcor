@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
+import { Model, Document } from 'mongoose'
 import { CreateUserDto } from './dto/create-user.dto'
 import { User } from './user.interface'
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private userModel: Model<User>) {}
+  constructor(@InjectModel('User') private userModel: Model<User & Document>) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = new this.userModel(createUserDto)
@@ -26,7 +26,7 @@ export class UserService {
   }
 
   async delete(id: string): Promise<User> {
-    const deletedUser = await this.userModel.findOneAndDelete({ _id: id })
+    const deletedUser = await this.userModel.findByIdAndDelete(id)
 
     if (!deletedUser) {
       throw new NotFoundException()

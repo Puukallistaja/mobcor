@@ -55,7 +55,7 @@ export class UserController {
     description: 'Deleted',
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  deleteUser(@Param() { id }: FindByIdParam): Promise<User> {
+  deleteUser(@Param('id', ValidationPipe) { id }: FindByIdParam): Promise<User> {
     return this.userService.delete(id)
   }
 
