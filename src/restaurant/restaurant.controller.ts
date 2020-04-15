@@ -1,10 +1,11 @@
 import {Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe} from '@nestjs/common';
 import {Restaurant} from "../restaurant/interfaces/restaurant.interface";
 import {CreateRestaurantDto} from "./dto/create-restaurant.dto";
-import {ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiParam, ApiResponse, ApiTags, ApiBearerAuth} from "@nestjs/swagger";
 import {RestaurantService} from "../restaurant/restaurant.service";
 
 @Controller('restaurant')
+@ApiBearerAuth()
 @ApiTags('Restaurants')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}

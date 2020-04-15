@@ -3,17 +3,18 @@ import { AuthGuard } from '@nestjs/passport'
 import { ApiTags, ApiBody } from '@nestjs/swagger'
 import { UserService } from '../user/user.service'
 import { CredentialsDto } from './dto/credentials.dto'
+import { AuthService } from './auth.service'
 
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   @UseGuards(AuthGuard('local'))
   @ApiBody({ type: CredentialsDto })
   async login(@Request() req: any) {
-    return req.user
+    return this.authService.assignToken(req.user)
   }
 
   // @Post('register')

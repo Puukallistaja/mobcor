@@ -7,12 +7,21 @@ import {
   UsePipes,
   ValidationPipe,
   Delete,
+  UseGuards,
 } from '@nestjs/common'
 import { UserService } from './user.service'
 import { User } from './user.interface'
 import { CreateUserDto } from './dto/create-user.dto'
-import { ApiTags, ApiParam, ApiResponse } from '@nestjs/swagger'
+import {
+  ApiTags,
+  ApiParam,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiProperty,
+  ApiOperation,
+} from '@nestjs/swagger'
 import { FindByIdParam } from './classes/findById'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 
 @Controller('user')
 @ApiTags('Users')
@@ -20,12 +29,15 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @ApiOperation({ summary: 'List of users' })
   async userList(): Promise<User[]> {
     return await this.userService.find()
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
+  @ApiBearerAuth()
   @ApiResponse({
     status: 201,
     description: 'The record has been successfully created.',
@@ -49,13 +61,16 @@ export class UserController {
 
   @Delete(':id')
   @UsePipes(ValidationPipe)
+  @ApiBearerAuth()
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({
     status: 200,
     description: 'Deleted',
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  deleteUser(@Param('id', ValidationPipe) { id }: FindByIdParam): Promise<User> {
+  deleteUser(
+    @Param('id', ValidationPipe) { id }: FindByIdParam,
+  ): Promise<User> {
     return this.userService.delete(id)
   }
 

@@ -9,6 +9,7 @@ import { AppModule } from './app.module';
     .setTitle('Corest of the cores')
     .setDescription('The core API description')
     .setVersion('1.333.7')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/api', app, document);
