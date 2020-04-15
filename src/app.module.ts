@@ -6,6 +6,8 @@ import { TaskModule } from './task/task.module'
 import { AuthModule } from './auth/auth.module'
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { ConfigModule } from '@nestjs/config';
+import { OrderController } from './order/order.controller';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     TaskModule,
     RestaurantModule,
+    OrderModule,
   ],
   providers: [AppService],
+  controllers: [OrderController],
 })
 export class AppModule {}
