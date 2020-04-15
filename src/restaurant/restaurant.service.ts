@@ -1,12 +1,14 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
-import {Restaurant} from "../restaurant/interfaces/restaurant.interface";
-import {CreateRestaurantDto} from "../restaurant/dtos/create-restaurant.dto";
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+import { Restaurant } from '../restaurant/interfaces/restaurant.interface'
+import { CreateRestaurantDto } from '../restaurant/dtos/create-restaurant.dto'
 
 @Injectable()
 export class RestaurantService {
-  constructor(@InjectModel('Restaurant') private restaurantModel: Model<Restaurant>) {}
+  constructor(
+    @InjectModel('Restaurant') private restaurantModel: Model<Restaurant>,
+  ) {}
 
   async create(createRestaurantDto: CreateRestaurantDto): Promise<Restaurant> {
     const createdRestaurant = new this.restaurantModel(createRestaurantDto)
@@ -21,8 +23,15 @@ export class RestaurantService {
     return this.restaurantModel.findById(id)
   }
 
-  async edit(id: string, createRestaurantDto: CreateRestaurantDto): Promise<Restaurant> {
-    const updatedRestaurant = await this.restaurantModel.findByIdAndUpdate(id, createRestaurantDto)
+  async edit(
+    id: string,
+    createRestaurantDto: CreateRestaurantDto,
+  ): Promise<Restaurant> {
+    const updatedRestaurant = await this.restaurantModel.findByIdAndUpdate(
+      id,
+      createRestaurantDto,
+      { new: true },
+    )
 
     if (!updatedRestaurant) {
       throw new NotFoundException()

@@ -33,7 +33,7 @@ export class RestaurantController {
     description: 'Success',
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async restaurantEdit(@Param() id: string, @Body() restaurant: CreateRestaurantDto): Promise<Restaurant> {
+  async restaurantEdit(@Param('id') id: string, @Body() restaurant: CreateRestaurantDto): Promise<Restaurant> {
     return this.restaurantService.edit(id, restaurant)
   }
 
