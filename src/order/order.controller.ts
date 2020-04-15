@@ -20,10 +20,10 @@ import {
 } from '@nestjs/swagger'
 import { OrderService } from '../order/order.service'
 import { Order } from '../order/interfaces/order.interface'
-import { CreateOrderDto } from '../order/dtos/create-order.dto'
+import { CreateOrderDto } from './dto/create-order.dto'
 import { OrderStatus } from '../order/models/order.model'
-import { OrderListFiltersDto } from '../order/dtos/order-list-filters.dto'
-import { UpdateOrderDto } from '../order/dtos/update-order.dto'
+import { OrderListFiltersDto } from './dto/order-list-filters.dto'
+import { UpdateOrderDto } from './dto/update-order.dto'
 import { OrderStatusValidationPipe } from '../order/pipes/order-status-validation.pipe'
 
 @Controller('order')

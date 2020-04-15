@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Restaurant } from '../restaurant/interfaces/restaurant.interface'
-import { CreateRestaurantDto } from '../restaurant/dtos/create-restaurant.dto'
+import { CreateRestaurantDto } from './dto/create-restaurant.dto'
 
 @Injectable()
 export class RestaurantService {

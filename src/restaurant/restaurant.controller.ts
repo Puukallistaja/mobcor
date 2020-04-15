@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe} from '@nestjs/common';
 import {Restaurant} from "../restaurant/interfaces/restaurant.interface";
-import {CreateRestaurantDto} from "../restaurant/dtos/create-restaurant.dto";
+import {CreateRestaurantDto} from "./dto/create-restaurant.dto";
 import {ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {RestaurantService} from "../restaurant/restaurant.service";
 
