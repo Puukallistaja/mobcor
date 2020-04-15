@@ -1,82 +1,48 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 import { Task, TaskStatus } from './task.model'
-import { randomBytes } from 'crypto'
-import { CreateTaskDto } from './dto/createTask.dto'
-import { UpdateTaskDto } from './dto/updateTask.dto'
-import { GetTaskFilterDto } from './dto/getTaskFilter.dto'
+import { CreateTaskDto, UpdateTaskDto, GetTaskFilterDto } from './dto'
 
 @Injectable()
 export class TaskService {
-  private tasks: Task[] = [
-    {
-      title: 'string',
-      description: 'string',
-      status: TaskStatus.OPEN,
-      id: '2dec028395d0696d',
-    },
-    {
-      title: 'string',
-      description: 'string',
-      status: TaskStatus.OPEN,
-      id: '7f5c271d05730167',
-    },
-    {
-      title: 'string',
-      description: 'string',
-      status: TaskStatus.OPEN,
-      id: '95cc40b999144f0e',
-    },
-  ]
+  constructor(@InjectModel('Task') private taskModel: Model<Task>) {}
 
-  public getAllTasks(): Task[] {
-    return this.tasks
+  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+    const createdTask = new this.taskModel({
+      ...createTaskDto,
+      status: TaskStatus.OPEN,
+    })
+    return createdTask.save()
   }
 
-  public getAllTasksWithFilters({ status, search }: GetTaskFilterDto): Task[] {
-    let tasks = this.getAllTasks()
+  async find(params?: GetTaskFilterDto): Promise<Task[]> {
+    return this.taskModel.find(params)
+  }
 
-    if (status) {
-      tasks = tasks.filter(task => task.status === status)
+  async findById(id: string): Promise<Task> {
+    const foundTask = await this.taskModel.findById(id)
+    if (!foundTask) {
+      throw new NotFoundException()
     }
-    if (search) {
-      tasks = tasks.filter(
-        task =>
-          task.title.includes(search) || task.description.includes(search),
-      )
+    return foundTask
+  }
+
+  async update(id: string, status: UpdateTaskDto): Promise<Task> {
+    const foundTask = await this.taskModel.findByIdAndUpdate(id, status)
+    if (!foundTask) {
+      throw new NotFoundException()
+    }
+    return foundTask
+  }
+
+  async delete(id: string): Promise<Task> {
+    const deletedTask = await this.taskModel.findOneAndDelete({ _id: id })
+
+    if (!deletedTask) {
+      throw new NotFoundException()
     }
 
-    return tasks
-  }
-
-  public createTask({ title, description }: CreateTaskDto): Task {
-    const task: Task = {
-      title,
-      description,
-      status: TaskStatus.OPEN,
-      id: randomBytes(8).toString('hex'),
-    }
-    this.tasks = [...this.tasks, task]
-    return task
-  }
-
-  public getTaskById(id: string): Task {
-    return this.tasks.find(task => task.id === id)
-  }
-
-  public deleteTask(id: string): Task[] {
-    this.tasks = this.tasks.filter(task => task.id !== id)
-    return this.tasks
-  }
-
-  public updateTask({
-    id,
-    updateTaskDto,
-  }: {
-    id: string
-    updateTaskDto: UpdateTaskDto
-  }): Task {
-    const task = this.getTaskById(id)
-    task.status = updateTaskDto.status
-    return task
+    return deletedTask
   }
 }
