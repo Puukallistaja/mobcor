@@ -11,13 +11,13 @@ export enum OrderStatus {
   DONE = 'DONE',
   IN_PROGRESS = 'IN_PROGRESS',
   NEW = 'NEW',
-  CANCELL = 'CANCELL',
+  CANCELLED = 'CANCELLED',
 }
 
 export const OrderStatusArray = [
   OrderStatus.NEW,
   OrderStatus.DONE,
-  OrderStatus.CANCELL,
+  OrderStatus.CANCELLED,
   OrderStatus.IN_PROGRESS,
 ]
 

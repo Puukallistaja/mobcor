@@ -1,17 +1,15 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
-import {Order} from "../order/interfaces/order.interface";
-import {CreateOrderDto} from "../order/dtos/create-order.dto";
-import {OrderListFiltersDto} from "../order/dtos/order-list-filters.dto";
-import {OrderStatus} from "../order/models/order.model";
-import {UpdateOrderDto} from "./dtos/update-order.dto";
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+import { Order } from '../order/interfaces/order.interface'
+import { CreateOrderDto } from '../order/dtos/create-order.dto'
+import { OrderListFiltersDto } from '../order/dtos/order-list-filters.dto'
+import { OrderStatus } from '../order/models/order.model'
+import { UpdateOrderDto } from './dtos/update-order.dto'
 
 @Injectable()
 export class OrderService {
-  constructor(
-    @InjectModel('Order') private orderModel: Model<Order>,
-  ) {}
+  constructor(@InjectModel('Order') private orderModel: Model<Order>) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     const createdOrder = new this.orderModel({
@@ -29,13 +27,10 @@ export class OrderService {
     return this.orderModel.findById(id)
   }
 
-  async edit(
-    id: string,
-    status: UpdateOrderDto,
-  ): Promise<Order> {
+  async edit(id: string, status: UpdateOrderDto): Promise<Order> {
     const updatedOrder = await this.orderModel.findByIdAndUpdate(
       id,
-      status,
+      { status },
       { new: true },
     )
 
