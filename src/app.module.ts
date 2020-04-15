@@ -4,18 +4,22 @@ import { AppService } from './app.service'
 import { UserModule } from './user/user.module'
 import { TaskModule } from './task/task.module'
 import { AuthModule } from './auth/auth.module'
-import { RestaurantController } from './restaurant/restaurant.controller';
-import { RestaurantService } from './restaurant/restaurant.service';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { ConfigModule } from '@nestjs/config';
+
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/mobcore'),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_BASE_URL, {
+      useNewUrlParser: true,
+      user: process.env.MONGODB_USER,
+      pass: process.env.MONGODB_PASSWORD,
+    }),
     AuthModule,
     UserModule,
     TaskModule,
     RestaurantModule,
   ],
-  controllers: [RestaurantController],
-  providers: [AppService, RestaurantService],
+  providers: [AppService],
 })
 export class AppModule {}
