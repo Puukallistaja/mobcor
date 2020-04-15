@@ -3,16 +3,13 @@ import {OrderItems} from "../models/order.model";
 
 export class CreateOrderDto {
   @ApiProperty()
-  restaurantId?: string
+  restaurantId: string
 
   @ApiProperty()
   userId: string
 
   @ApiProperty()
-  price: string
-
-  @ApiProperty()
-  status: string
+  price: number
 
   @ApiProperty()
   items: Array<OrderItems>

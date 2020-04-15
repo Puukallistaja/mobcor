@@ -10,3 +10,6 @@ export class GetTaskFilterDto {
   @IsNotEmpty()
   search?: string
 }
+
+export class OrderListFiltersDto {
+}

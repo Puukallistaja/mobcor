@@ -3,6 +3,9 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {Order} from "../order/interfaces/order.interface";
 import {CreateOrderDto} from "../order/dtos/create-order.dto";
+import {OrderListFiltersDto} from "../order/dtos/order-list-filters.dto";
+import {OrderStatus} from "../order/models/order.model";
+import {UpdateOrderDto} from "./dtos/update-order.dto";
 
 @Injectable()
 export class OrderService {
@@ -11,11 +14,14 @@ export class OrderService {
   ) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
-    const createdOrder = new this.orderModel(createOrderDto)
+    const createdOrder = new this.orderModel({
+      ...createOrderDto,
+      status: OrderStatus.NEW,
+    })
     return createdOrder.save()
   }
 
-  async find(params?: Order): Promise<Order[]> {
+  async find(params?: OrderListFiltersDto): Promise<Order[]> {
     return this.orderModel.find(params)
   }
 
@@ -25,11 +31,11 @@ export class OrderService {
 
   async edit(
     id: string,
-    createOrderDto: CreateOrderDto,
+    status: UpdateOrderDto,
   ): Promise<Order> {
     const updatedOrder = await this.orderModel.findByIdAndUpdate(
       id,
-      createOrderDto,
+      status,
       { new: true },
     )
 

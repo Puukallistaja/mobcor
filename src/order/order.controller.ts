@@ -1,9 +1,24 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe} from '@nestjs/common';
-import {ApiParam, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe
+} from '@nestjs/common';
+import {ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {OrderService} from "../order/order.service";
 import {Order} from "../order/interfaces/order.interface";
 import {CreateOrderDto} from "../order/dtos/create-order.dto";
 import {OrderStatus} from "../order/models/order.model";
+import {OrderListFiltersDto} from "../order/dtos/order-list-filters.dto";
+import {UpdateOrderDto} from "../order/dtos/update-order.dto";
+import {OrderStatusValidationPipe} from "../order/pipes/order-status-validation.pipe";
 
 @Controller('order')
 @ApiTags('Orders')
@@ -12,8 +27,8 @@ export class OrderController {
 
   @Get()
   @ApiQuery({ name: 'status', enum: OrderStatus, required: false })
-  async orderList(): Promise<Order[]> {
-    return await this.orderService.find();
+  async orderList(@Query(ValidationPipe) filterDto: OrderListFiltersDto): Promise<Order[]> {
+    return await this.orderService.find(filterDto);
   }
 
   @Post()
@@ -29,14 +44,14 @@ export class OrderController {
 
   @Patch(':id')
   @UsePipes(ValidationPipe)
-  @ApiParam({ name: 'id', type: String })
+  @ApiBody({ type: UpdateOrderDto })
   @ApiResponse({
     status: 200,
     description: 'Success',
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  async orderEdit(@Param('id') id: string, @Body() order: CreateOrderDto): Promise<Order> {
-    return this.orderService.edit(id, order)
+  async orderEdit(@Param('id') id: string, @Body('status', OrderStatusValidationPipe) status: UpdateOrderDto,): Promise<Order> {
+    return this.orderService.edit(id, status)
   }
 
   @Get(':id')
@@ -48,7 +63,11 @@ export class OrderController {
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
   getOrder(@Param('id') id): Promise<Order> {
-    return this.orderService.findById(id);
+    const foundOrder = this.orderService.findById(id);
+    if (!foundOrder) {
+      throw new NotFoundException()
+    }
+    return foundOrder
   }
 
   @Delete(':id')
