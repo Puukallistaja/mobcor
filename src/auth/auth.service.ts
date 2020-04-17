@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   async assignToken({ name, email, _id }: UserModel) {
-    const jwtPayload = { name, email, sub: _id }
+    const jwtPayload = { name, email, sub: _id, roles: ['user'] }
     return {
       accessToken: this.jwtService.sign(jwtPayload),
     }

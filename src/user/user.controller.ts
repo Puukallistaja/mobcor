@@ -17,11 +17,11 @@ import {
   ApiParam,
   ApiResponse,
   ApiBearerAuth,
-  ApiProperty,
   ApiOperation,
 } from '@nestjs/swagger'
 import { FindByIdParam } from './classes/findById'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { RolesGuard } from 'src/auth/roles.guard'
 
 @Controller('user')
 @ApiTags('Users')
@@ -35,7 +35,7 @@ export class UserController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, new RolesGuard(['admin']))
   @UsePipes(ValidationPipe)
   @ApiBearerAuth()
   @ApiResponse({
