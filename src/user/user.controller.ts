@@ -60,23 +60,20 @@ export class UserController {
   }
 
   @Delete(':id')
-  @UsePipes(ValidationPipe)
-  @ApiBearerAuth()
-  @ApiParam({ name: 'id', type: String })
   @ApiResponse({
     status: 200,
     description: 'Deleted',
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  deleteUser(
-    @Param('id', ValidationPipe) { id }: FindByIdParam,
-  ): Promise<User> {
+  @ApiBearerAuth()
+  @UsePipes(ValidationPipe)
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({
+    status: 200,
+    description: 'Success',
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  deleteUser(@Param() { id }: FindByIdParam): Promise<User> {
     return this.userService.delete(id)
   }
-
-  // @UseGuards(AuthGuard('local'))
-  // @Post('auth/login')
-  // async login(@Body() user: LoginUserDto) {
-  //   return user;
-  // }
 }

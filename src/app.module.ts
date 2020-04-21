@@ -19,10 +19,10 @@ import { OrderModule } from './order/order.module';
       pass: process.env.MONGODB_PASSWORD,
     }),
     AuthModule,
-    UserModule,
-    TaskModule,
-    RestaurantModule,
     OrderModule,
+    RestaurantModule,
+    TaskModule,
+    UserModule,
   ],
 })
 export class AppModule {}
