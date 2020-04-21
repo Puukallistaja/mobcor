@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 
 ;(async function swagger() {
   const app = await NestFactory.create(AppModule);
-
+  app.setGlobalPrefix('api');
   const options = new DocumentBuilder()
     .setTitle('Corest of the cores')
     .setDescription('The core API description')
